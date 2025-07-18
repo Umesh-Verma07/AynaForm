@@ -135,7 +135,7 @@ AynaForm/
 
 ## Workflow Overview
 
-![AynaForm Platform – Workflow Overview](./Workflow-diagram.png)
+![AynaForm Platform – Workflow Overview](./workflow-diagram.png)
 
 ---
 
