@@ -1,0 +1,28 @@
+{
+  "name": "aynaform-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frontend for AynaForm feedback platform",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "framer-motion": "^11.0.17",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^6.23.1",
+    "recharts": "^2.9.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.6.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "vite": "^5.2.10"
+  }
+}
