@@ -5,16 +5,19 @@ import Navbar from "../components/Navbar";
 
 const PAGE_SIZE = 15;
 
+// Page to view and export form responses
 const FormResponses = () => {
   const { id } = useParams();
+  // State
   const [form, setForm] = useState(null);
   const [responses, setResponses] = useState([]);
   const [page, setPage] = useState(1);
   const [error, setError] = useState("");
-  const [viewMode, setViewMode] = useState("summary"); // "summary" or "table"
+  const [viewMode, setViewMode] = useState("summary");
   const [filterText, setFilterText] = useState("");
   const [expandedRows, setExpandedRows] = useState(new Set());
 
+  // Load form and responses
   useEffect(() => {
     getForm(id).then((res) => setForm(res.data));
     getResponses(id)
@@ -44,25 +47,17 @@ const FormResponses = () => {
   // Filter responses based on search text
   const filteredResponses = responses.filter(response => {
     if (!filterText.trim()) return true;
-    
     const searchTerm = filterText.toLowerCase();
-    
-    // Check if any answer contains the search term
     const answerMatch = response.answers.some(answer => 
       answer.answer.toLowerCase().includes(searchTerm)
     );
-    
-    // Check if any question text contains the search term
     const questionMatch = form?.questions.some(question => 
       question.text.toLowerCase().includes(searchTerm)
     );
-    
-    // Check if submission date contains the search term
     const dateMatch = new Date(response.submittedAt)
       .toLocaleString()
       .toLowerCase()
       .includes(searchTerm);
-    
     return answerMatch || questionMatch || dateMatch;
   });
 
@@ -71,18 +66,16 @@ const FormResponses = () => {
     setPage(1);
   }, [filterText]);
 
+  // Export responses as CSV
   const handleExport = async () => {
     try {
       const res = await exportCSV(id);
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement("a");
       link.href = url;
-      
-      // Use form title for filename, fallback to form ID if no title
       const fileName = form?.title 
         ? `${form.title.replace(/[^a-zA-Z0-9\s]/g, '_').replace(/\s+/g, '_')}_responses.csv`
         : `form_${id}_responses.csv`;
-      
       link.setAttribute("download", fileName);
       document.body.appendChild(link);
       link.click();

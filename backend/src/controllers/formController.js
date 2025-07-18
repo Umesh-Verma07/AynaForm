@@ -3,6 +3,7 @@ const Response = require('../models/Response');
 const csvExport = require('../utils/csvExport');
 const Joi = require('joi');
 
+// Joi schema for validating form input
 const formSchema = Joi.object({
   title: Joi.string().min(3).max(100).required(),
   description: Joi.string().allow(''),
@@ -16,11 +17,12 @@ const formSchema = Joi.object({
         then: Joi.array().items(Joi.string().min(1)).min(2).required(),
         otherwise: Joi.array().items(Joi.string().min(1)).optional().allow(null)
       })
-    }).unknown(true) // <-- allow unknown keys like _id
+    }).unknown(true) // allow unknown keys like _id
   ).min(1).max(5).required(),
   acceptingResponses: Joi.boolean().optional()
 });
 
+// Helper function to format Joi validation errors
 const formatJoiErrors = (error) => {
   if (!error) return null;
   return error.details.map((d) => ({
@@ -30,14 +32,17 @@ const formatJoiErrors = (error) => {
   }));
 };
 
+// Create a new form
 exports.createForm = async (req, res, next) => {
   try {
+    // Remove _id from questions if present (for new forms)
     if (Array.isArray(req.body.questions)) {
       req.body.questions = req.body.questions.map(q => {
         const { _id, ...rest } = q;
         return rest;
       });
     }
+    // Validate form input
     const { error } = formSchema.validate(req.body, { abortEarly: false });
     if (error) {
       return res.status(400).json({
@@ -46,6 +51,7 @@ exports.createForm = async (req, res, next) => {
         code: 'VALIDATION_ERROR'
       });
     }
+    // Create form in database
     const form = await Form.create({ ...req.body, createdBy: req.user.id });
     res.status(201).json(form);
   } catch (err) {
@@ -54,6 +60,7 @@ exports.createForm = async (req, res, next) => {
   }
 };
 
+// Get all forms created by the user
 exports.getForms = async (req, res, next) => {
   try {
     const forms = await Form.find({ createdBy: req.user.id });
@@ -63,6 +70,7 @@ exports.getForms = async (req, res, next) => {
   }
 };
 
+// Get a single form by ID
 exports.getForm = async (req, res, next) => {
   try {
     const form = await Form.findById(req.params.id);
@@ -73,6 +81,7 @@ exports.getForm = async (req, res, next) => {
   }
 };
 
+// Update an existing form
 exports.updateForm = async (req, res, next) => {
   try {
     // For update, preserve _id for existing questions, assign new _id for new questions
@@ -87,6 +96,7 @@ exports.updateForm = async (req, res, next) => {
         }
       });
     }
+    // Validate form input
     const { error } = formSchema.validate(req.body, { abortEarly: false });
     if (error) {
       return res.status(400).json({
@@ -123,6 +133,7 @@ exports.updateForm = async (req, res, next) => {
   }
 };
 
+// Delete a form and its responses
 exports.deleteForm = async (req, res, next) => {
   try {
     const form = await Form.findOneAndDelete({ _id: req.params.id, createdBy: req.user.id });
@@ -134,18 +145,20 @@ exports.deleteForm = async (req, res, next) => {
   }
 };
 
+// Submit a response to a form
 exports.submitResponse = async (req, res, next) => {
   try {
     const form = await Form.findById(req.params.id);
     if (!form) return res.status(404).json({ error: 'Form not found' });
 
-    // Validate answers
+    // Validate answers array length
     if (!Array.isArray(req.body.answers) || req.body.answers.length !== form.questions.length) {
       return res.status(400).json({ error: 'Invalid answers' });
     }
 
     // Optionally, add more validation per question type
 
+    // Save the response
     const response = await Response.create({
       form: form._id,
       answers: req.body.answers
@@ -156,6 +169,7 @@ exports.submitResponse = async (req, res, next) => {
   }
 };
 
+// Get all responses for a form
 exports.getResponses = async (req, res, next) => {
   try {
     const form = await Form.findOne({ _id: req.params.id, createdBy: req.user.id });
@@ -168,6 +182,7 @@ exports.getResponses = async (req, res, next) => {
   }
 };
 
+// Get a summary of responses for a form
 exports.getSummary = async (req, res, next) => {
   try {
     const form = await Form.findOne({ _id: req.params.id, createdBy: req.user.id });
@@ -194,6 +209,7 @@ exports.getSummary = async (req, res, next) => {
   }
 };
 
+// Export responses for a form as CSV
 exports.exportCSV = async (req, res, next) => {
   try {
     const form = await Form.findOne({ _id: req.params.id, createdBy: req.user.id });

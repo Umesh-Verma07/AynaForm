@@ -6,12 +6,15 @@ import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, Resp
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#8dd1e1"];
 
+// Page to show summary of form responses
 const FormSummary = () => {
   const { id } = useParams();
+  // State
   const [form, setForm] = useState(null);
   const [summary, setSummary] = useState([]);
   const [error, setError] = useState("");
 
+  // Load form and summary
   useEffect(() => {
     getForm(id).then((res) => setForm(res.data));
     getSummary(id)

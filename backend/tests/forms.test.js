@@ -6,6 +6,7 @@ const Form = require('../src/models/Form');
 const Response = require('../src/models/Response');
 let token, formId;
 
+// Setup: connect to DB and create a test user
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
   await User.deleteMany({});
@@ -15,6 +16,7 @@ beforeAll(async () => {
   const res = await request(app).post('/api/auth/login').send({ username: 'admin2', password: 'password123' });
   token = res.body.token;
 });
+// Teardown: clean up DB and close connection
 afterAll(async () => {
   await User.deleteMany({});
   await Form.deleteMany({});
@@ -23,6 +25,7 @@ afterAll(async () => {
 });
 
 describe('Forms', () => {
+  // Test form creation
   it('should create a form', async () => {
     const res = await request(app)
       .post('/api/forms')
@@ -39,6 +42,7 @@ describe('Forms', () => {
     formId = res.body._id;
   });
 
+  // Test getting all forms
   it('should get forms', async () => {
     const res = await request(app)
       .get('/api/forms')
@@ -47,6 +51,7 @@ describe('Forms', () => {
     expect(Array.isArray(res.body)).toBe(true);
   });
 
+  // Test getting a form (public)
   it('should get a form (public)', async () => {
     const res = await request(app)
       .get(`/api/forms/${formId}`);
@@ -54,6 +59,7 @@ describe('Forms', () => {
     expect(res.body.title).toBe('Test Form');
   });
 
+  // Test submitting a response (public)
   it('should submit a response (public)', async () => {
     const res = await request(app)
       .post(`/api/forms/${formId}/responses`)
@@ -66,6 +72,7 @@ describe('Forms', () => {
     expect(res.statusCode).toBe(201);
   });
 
+  // Test getting responses (protected)
   it('should get responses (protected)', async () => {
     const res = await request(app)
       .get(`/api/forms/${formId}/responses`)
@@ -74,6 +81,7 @@ describe('Forms', () => {
     expect(Array.isArray(res.body)).toBe(true);
   });
 
+  // Test getting summary (protected)
   it('should get summary (protected)', async () => {
     const res = await request(app)
       .get(`/api/forms/${formId}/summary`)
@@ -82,6 +90,7 @@ describe('Forms', () => {
     expect(Array.isArray(res.body)).toBe(true);
   });
 
+  // Test exporting CSV (protected)
   it('should export CSV (protected)', async () => {
     const res = await request(app)
       .get(`/api/forms/${formId}/export`)

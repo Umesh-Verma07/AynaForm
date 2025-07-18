@@ -8,7 +8,9 @@ import toast from "react-hot-toast";
 
 const defaultQuestion = { text: "", type: "text", options: [], required: true };
 
+// Form builder page for creating and editing forms
 const FormBuilder = ({ editMode, onUpdate }) => {
+  // State
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [questions, setQuestions] = useState([ { ...defaultQuestion } ]);
@@ -19,6 +21,7 @@ const FormBuilder = ({ editMode, onUpdate }) => {
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [acceptingResponses, setAcceptingResponses] = useState(true);
 
+  // Load form data if editing
   useEffect(() => {
     if (editMode && id) {
       getForm(id)
@@ -32,6 +35,7 @@ const FormBuilder = ({ editMode, onUpdate }) => {
     }
   }, [editMode, id]);
 
+  // Handlers for question and option changes
   const handleQuestionChange = (idx, field, value) => {
     setQuestions((qs) =>
       qs.map((q, i) =>
@@ -46,7 +50,6 @@ const FormBuilder = ({ editMode, onUpdate }) => {
     setQuestions((qs) =>
       qs.map((q, i) => {
         if (i !== qIdx) return q;
-        // Make a copy of options, extending if needed
         let newOptions = [...q.options];
         while (newOptions.length <= oIdx) {
           newOptions.push("");
@@ -57,6 +60,7 @@ const FormBuilder = ({ editMode, onUpdate }) => {
     );
   };
 
+  // Add/remove questions and options
   const addQuestion = () => {
     if (questions.length < 5) setQuestions([...questions, { ...defaultQuestion }]);
   };
@@ -69,7 +73,6 @@ const FormBuilder = ({ editMode, onUpdate }) => {
   const handleDeleteQuestionConfirm = async () => {
     if (deleteConfirmText.toLowerCase() !== "delete") return;
     let questionId = questions[deleteModal.questionIdx]?._id;
-    // Remove question from state
     setQuestions(qs => qs.filter((_, i) => i !== deleteModal.questionIdx));
     if (editMode && id && questionId) {
       try {
@@ -101,7 +104,6 @@ const FormBuilder = ({ editMode, onUpdate }) => {
       qs.map((q, i) => {
         if (i === qIdx) {
           const newOptions = q.options.filter((_, j) => j !== oIdx);
-          // Always ensure the last option is an empty string for 'Add option'
           if (newOptions.length === 0 || newOptions[newOptions.length - 1].trim() !== "") {
             newOptions.push("");
           }
@@ -112,7 +114,7 @@ const FormBuilder = ({ editMode, onUpdate }) => {
     );
   };
 
-  // Revert to original hasEmptyOption logic
+  // Form submission
   const hasEmptyOption = questions.some(
     q => q.type === "mcq" &&
       q.options.slice(0, -1).some(opt => !opt.trim())
@@ -126,16 +128,13 @@ const FormBuilder = ({ editMode, onUpdate }) => {
       return;
     }
     try {
-      // When updating, preserve _id for existing questions
       let questionsToSend = questions.map(q => {
         const { _id, ...rest } = q;
         let options = q.options;
         if (q.type === "mcq") {
-          // Remove the last option if it's empty (the 'Add option' field)
           if (options.length && !options[options.length - 1].trim()) {
             options = options.slice(0, -1);
           }
-          // Also filter out any accidental empty options
           options = options.filter(opt => opt.trim() !== "");
         }
         return _id ? { ...rest, _id, options } : { ...rest, options };
@@ -145,14 +144,12 @@ const FormBuilder = ({ editMode, onUpdate }) => {
         await updateForm(id, data);
         toast.success("Form updated successfully!");
         if (onUpdate) onUpdate();
-        // Stay on the same page
       } else {
         await createForm(data);
         toast.success("Form created successfully!");
         navigate("/dashboard");
       }
     } catch (err) {
-      // Improved error handling
       const backendErrors = err.response?.data?.errors;
       if (backendErrors && Array.isArray(backendErrors)) {
         setError(backendErrors.map(e => e.message).join("\n"));
@@ -167,7 +164,7 @@ const FormBuilder = ({ editMode, onUpdate }) => {
       <Navbar />
       <div className={`min-h-screen flex flex-col items-center py-8 ${editMode ? 'pt-0' : 'pt-20'}`}>
         <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto p-0">
-          {/* Header Card */}
+          {/* Form title and description */}
           <div className="bg-white dark:bg-[#232a47] rounded-2xl shadow-xl border-t-8 border-purple-500 p-8 mb-3 mt-0">
             <input
               type="text"
@@ -192,11 +189,11 @@ const FormBuilder = ({ editMode, onUpdate }) => {
           {error && (
             <div className="text-red-500 dark:text-red-300 mb-2 whitespace-pre-line">
               {error.split('\n').map((msg, i) => (
-                <div key={i}>• {msg}</div>
+                <div key={i}> {msg}</div>
               ))}
             </div>
           )}
-          {/* Question Cards */}
+          {/* Questions */}
           {questions.map((q, idx) => (
             <div key={idx} className="mb-3 bg-white dark:bg-gray-900 rounded-2xl shadow p-6 border border-gray-200 dark:border-gray-700 relative">
               <div className="flex items-center mb-2 gap-2 flex-wrap">
@@ -233,7 +230,6 @@ const FormBuilder = ({ editMode, onUpdate }) => {
                 {q.type === 'mcq' && (
                   <div className="flex flex-col gap-2 w-full mt-2">
                     {(() => {
-                      // Always show all filled options, and exactly one empty field at the end
                       let options = q.options ? [...q.options] : [""];
                       options = options.filter(opt => opt.trim() !== "");
                       options.push("");

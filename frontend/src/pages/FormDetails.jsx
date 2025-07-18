@@ -6,9 +6,11 @@ import toast, { Toaster } from "react-hot-toast";
 import FormBuilder from "./FormBuilder";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Form details page for viewing and editing a form
 const FormDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  // State
   const [form, setForm] = useState(null);
   const [error, setError] = useState("");
   const [deleteModal, setDeleteModal] = useState({ show: false, formId: null, formTitle: "" });
@@ -16,6 +18,7 @@ const FormDetails = () => {
   const [responseCount, setResponseCount] = useState(0);
   const [acceptingResponsesModal, setAcceptingResponsesModal] = useState({ show: false, nextValue: true });
 
+  // Load form and response count
   useEffect(() => {
     getForm(id)
       .then((res) => setForm(res.data))
@@ -25,6 +28,7 @@ const FormDetails = () => {
       .catch(() => setResponseCount(0));
   }, [id]);
 
+  // Delete handlers
   const handleDeleteClick = () => {
     setDeleteModal({ show: true, formId: id, formTitle: form?.title || "" });
     setDeleteConfirmText("");
@@ -35,7 +39,6 @@ const FormDetails = () => {
       toast.error("Please type 'delete' to confirm");
       return;
     }
-
     try {
       await deleteForm(id);
       toast.success("Form deleted successfully!");
@@ -51,7 +54,7 @@ const FormDetails = () => {
     setDeleteConfirmText("");
   };
 
-  // Add a function to refresh form data
+  // Refresh form data
   const refreshForm = () => {
     getForm(id)
       .then((res) => setForm(res.data))
@@ -61,6 +64,7 @@ const FormDetails = () => {
       .catch(() => setResponseCount(0));
   };
 
+  // Accepting responses toggle
   const handleToggleAcceptingResponses = () => {
     setAcceptingResponsesModal({ show: true, nextValue: !form.acceptingResponses });
   };
@@ -95,7 +99,7 @@ const FormDetails = () => {
       <Toaster position="top-right" />
       <Navbar />
       <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-[#181c2f] dark:via-[#232a47] dark:to-[#2d1e3a] transition-colors duration-500 py-8 pt-20">
-        {/* Action Buttons Row */}
+        {/* Action buttons */}
         <div className="w-full max-w-2xl flex flex-wrap gap-3 mb-3 justify-end">
           {/* Accepting Responses Toggle */}
           <button
@@ -150,7 +154,7 @@ const FormDetails = () => {
             Copy Public Link
           </button>
         </div>
-        {/* Edit Form (reuse FormBuilder in edit mode) */}
+        {/* Edit Form */}
         <div className="w-full max-w-2xl">
           <FormBuilder editMode onUpdate={refreshForm} />
         </div>

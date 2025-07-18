@@ -10,22 +10,22 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(morgan('dev'));
+// -------- Middleware --------
+app.use(cors()); // Enable Cross-Origin Resource Sharing
+app.use(express.json()); // Parse JSON request bodies
+app.use(morgan('dev')); // Log HTTP requests
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/forms', formRoutes);
+// -------- Routes --------
+app.use('/api/auth', authRoutes); // Authentication routes
+app.use('/api/forms', formRoutes); // Form-related routes
 
-// Health check
+// Health check endpoint
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
-// Error handler
-app.use(errorHandler);
+// -------- Error handler --------
+app.use(errorHandler); // Centralized error handling
 
-// Connect to MongoDB and start server
+// -------- Connect to MongoDB and start server --------
 const PORT = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {

@@ -9,14 +9,19 @@ import PublicForm from "./PublicForm";
 import FormDetails from "./FormDetails";
 import { useAuth } from "../hooks/useAuth";
 
+// Main application component with routing
 const App = () => {
+  // Get authentication state
   const { isAuthenticated } = useAuth();
 
   return (
+    // App background and layout
     <div className="min-h-screen w-full font-sans bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-[#181c2f] dark:via-[#232a47] dark:to-[#2d1e3a] text-gray-900 dark:text-gray-100 transition-colors duration-500 flex flex-col">
       <Routes>
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        {/* Protected routes (require authentication) */}
         <Route
           path="/dashboard"
           element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
@@ -37,8 +42,11 @@ const App = () => {
           path="/forms/:id/summary"
           element={isAuthenticated ? <FormSummary /> : <Navigate to="/login" />}
         />
+        {/* Public form view */}
         <Route path="/forms/:id" element={<PublicForm />} />
+        {/* Protected form details */}
         <Route path="/forms/:id/details" element={isAuthenticated ? <FormDetails /> : <Navigate to="/login" />} />
+        {/* Redirect all other routes to dashboard */}
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </div>

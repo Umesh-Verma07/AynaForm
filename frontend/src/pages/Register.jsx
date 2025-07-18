@@ -3,13 +3,16 @@ import { useNavigate, Link } from "react-router-dom";
 import { register as registerApi, login as loginApi } from "../services/auth";
 import { useAuth } from "../hooks/useAuth";
 
+// Register page
 const Register = () => {
+  // State
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  // Handle register form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");

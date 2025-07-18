@@ -3,13 +3,16 @@ import { useParams } from "react-router-dom";
 import { getForm, submitResponse } from "../services/forms";
 import { useAuth } from "../hooks/useAuth";
 
+// Public form page for submitting responses
 const PublicForm = () => {
   const { id } = useParams();
+  // State
   const [form, setForm] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
 
+  // Load form data
   useEffect(() => {
     getForm(id)
       .then((res) => {
@@ -19,10 +22,12 @@ const PublicForm = () => {
       .catch(() => setError("Form not found"));
   }, [id]);
 
+  // Handle answer changes
   const handleChange = (idx, value) => {
     setAnswers((a) => a.map((v, i) => (i === idx ? value : v)));
   };
 
+  // Submit form response
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -120,7 +125,7 @@ const PublicForm = () => {
         {error && (
           <div className="text-red-500 dark:text-red-300 mb-2 whitespace-pre-line">
             {error.split('\n').map((msg, i) => (
-              <div key={i}>• {msg}</div>
+              <div key={i}> {msg}</div>
             ))}
           </div>
         )}

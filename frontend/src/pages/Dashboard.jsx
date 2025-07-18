@@ -5,13 +5,16 @@ import Navbar from "../components/Navbar";
 import { motion, AnimatePresence } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 
+// Dashboard page: shows user's forms and allows creation/deletion
 const Dashboard = () => {
+  // State for forms, error messages, and delete modal
   const [forms, setForms] = useState([]);
   const [error, setError] = useState("");
   const [deleteModal, setDeleteModal] = useState({ show: false, formId: null, formTitle: "" });
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const navigate = useNavigate();
 
+  // Fetch forms from API
   const fetchForms = async () => {
     try {
       const res = await getForms();
@@ -21,15 +24,18 @@ const Dashboard = () => {
     }
   };
 
+  // Load forms on mount
   useEffect(() => {
     fetchForms();
   }, []);
 
+  // Show delete confirmation modal
   const handleDeleteClick = (form) => {
     setDeleteModal({ show: true, formId: form._id, formTitle: form.title });
     setDeleteConfirmText("");
   };
 
+  // Confirm and delete a form
   const handleDeleteConfirm = async () => {
     if (deleteConfirmText.toLowerCase() !== "delete") {
       toast.error("Please type 'delete' to confirm");
@@ -48,6 +54,7 @@ const Dashboard = () => {
     }
   };
 
+  // Cancel delete modal
   const handleDeleteCancel = () => {
     setDeleteModal({ show: false, formId: null, formTitle: "" });
     setDeleteConfirmText("");
@@ -58,6 +65,7 @@ const Dashboard = () => {
       <Toaster position="top-right" />
       <Navbar />
       <div className="max-w-6xl mx-auto mt-8 px-2 sm:px-4 md:px-6 pt-20">
+        {/* Header and new form button */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-500 text-center sm:text-left dark:bg-gradient-to-r dark:from-blue-300 dark:to-purple-400">
             Your Forms
@@ -69,7 +77,9 @@ const Dashboard = () => {
             New Form
           </Link>
         </div>
+        {/* Error message */}
         {error && <div className="text-red-500 mb-2 dark:text-red-300">{error}</div>}
+        {/* Empty state */}
         {forms.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 bg-white/80 dark:bg-[#232a47]/80 rounded-2xl shadow-lg mt-10">
             <svg className="w-20 h-20 text-purple-400 mb-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
@@ -85,6 +95,7 @@ const Dashboard = () => {
             </Link>
           </div>
         ) : (
+          // List of forms
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
             {forms.map((form) => (
               <div
