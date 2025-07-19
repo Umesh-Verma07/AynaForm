@@ -289,9 +289,6 @@ const FormResponses = () => {
                         ) : (
                           // Text question statistics
                           <div className="space-y-3">
-                            <div className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
-                              {responses.length} text responses
-                            </div>
                             <div className="max-h-60 overflow-y-auto space-y-2">
                               {(() => {
                                 const textStats = getTextQuestionStats(question);
@@ -339,7 +336,16 @@ const FormResponses = () => {
                           {(page - 1) * PAGE_SIZE + idx + 1}
                         </td>
                         <td className="py-2 sm:py-3 px-2 sm:px-4 text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
-                          {new Date(response.createdAt).toLocaleDateString()}
+                          {(() => {
+                            const dateField = response.createdAt || response.submittedAt || response.date;
+                            if (!dateField) return 'N/A';
+                            try {
+                              const date = new Date(dateField);
+                              return isNaN(date.getTime()) ? 'N/A' : date.toLocaleDateString();
+                            } catch {
+                              return 'N/A';
+                            }
+                          })()}
                         </td>
                         {form.questions.map((q, qIdx) => {
                           const answer = response.answers.find(a => a.questionId === q._id)?.answer || 
