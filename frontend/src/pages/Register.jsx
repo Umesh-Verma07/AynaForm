@@ -31,7 +31,14 @@ const Register = () => {
       const res = await loginApi(username, password);
       login(res.data.token);
     } catch (err) {
-      setError(err.response?.data?.error || "Registration failed");
+      // Handle detailed validation errors
+      const backendErrors = err.response?.data?.errors;
+      if (backendErrors && Array.isArray(backendErrors)) {
+        const errorMessages = backendErrors.map(e => e.message).join(", ");
+        setError(errorMessages);
+      } else {
+        setError(err.response?.data?.error || "Registration failed");
+      }
       setIsRegistering(false);
     }
   };
@@ -63,7 +70,15 @@ const Register = () => {
         <div className="h-2 w-full bg-purple-500 absolute top-0 left-0 right-0"></div>
         <div className="pt-2">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center text-purple-600 dark:text-purple-400">Register</h2>
-          {error && <div className="text-red-500 dark:text-red-300 mb-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg text-sm">{error}</div>}
+          {error && (
+            <div className="text-red-500 dark:text-red-300 mb-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg text-sm">
+              {error.split(", ").map((err, index) => (
+                <div key={index} className="mb-1 last:mb-0">
+                  • {err}
+                </div>
+              ))}
+            </div>
+          )}
           <input
             type="text"
             placeholder="Username"
@@ -75,11 +90,14 @@ const Register = () => {
           <input
             type="password"
             placeholder="Password"
-            className="w-full mb-6 p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors text-base"
+            className="w-full mb-2 p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors text-base"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <div className="text-xs text-gray-500 dark:text-gray-400 mb-6 px-1">
+            Password must be at least 6 characters long
+          </div>
           <button
             type="submit"
             disabled={isRegistering}

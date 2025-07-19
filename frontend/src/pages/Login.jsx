@@ -30,7 +30,14 @@ const Login = () => {
       const res = await loginApi(username, password);
       login(res.data.token);
     } catch (err) {
-      setError(err.response?.data?.error || "Login failed");
+      // Handle detailed validation errors
+      const backendErrors = err.response?.data?.errors;
+      if (backendErrors && Array.isArray(backendErrors)) {
+        const errorMessages = backendErrors.map(e => e.message).join(", ");
+        setError(errorMessages);
+      } else {
+        setError(err.response?.data?.error || "Login failed");
+      }
       setIsLoggingIn(false);
     }
   };
@@ -62,7 +69,15 @@ const Login = () => {
         <div className="h-2 w-full bg-purple-500 absolute top-0 left-0"></div>
         <div className="pt-2">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center text-purple-600 dark:text-purple-400">Login</h2>
-          {error && <div className="text-red-500 dark:text-red-300 mb-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg text-sm">{error}</div>}
+          {error && (
+            <div className="text-red-500 dark:text-red-300 mb-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg text-sm">
+              {error.split(", ").map((err, index) => (
+                <div key={index} className="mb-1 last:mb-0">
+                  • {err}
+                </div>
+              ))}
+            </div>
+          )}
           <input
             type="text"
             placeholder="Username"
