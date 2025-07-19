@@ -160,16 +160,16 @@ const FormBuilder = ({ editMode, onUpdate }) => {
 
   return (
     <>
-      <div className={`min-h-screen flex flex-col items-center py-8 ${editMode ? 'pt-0' : 'pt-20'}`}>
+      <div className={`min-h-screen flex flex-col items-center py-8 px-4 ${editMode ? 'pt-0' : 'pt-20'}`}>
         <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto p-0">
           {/* Form title and description */}
-          <div className="bg-white dark:bg-[#232a47] rounded-2xl shadow-xl border-t-8 border-purple-500 p-8 mb-3 mt-0">
+          <div className="bg-white dark:bg-[#232a47] rounded-2xl shadow-xl border-t-8 border-purple-500 p-6 sm:p-8 mb-3 mt-0">
             <input
               type="text"
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="Form Title"
-              className="w-full text-3xl font-extrabold text-gray-900 dark:text-white mb-2 bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-400 dark:placeholder-gray-500"
+              className="w-full text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white mb-2 bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-400 dark:placeholder-gray-500"
               maxLength={100}
               required
               aria-label="Form Title"
@@ -179,13 +179,13 @@ const FormBuilder = ({ editMode, onUpdate }) => {
               value={description}
               onChange={e => setDescription(e.target.value)}
               placeholder="Description (optional)"
-              className="w-full text-gray-700 dark:text-gray-200 mb-2 bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-400 dark:placeholder-gray-500"
+              className="w-full text-gray-700 dark:text-gray-200 mb-2 bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-400 dark:placeholder-gray-500 text-sm sm:text-base"
               maxLength={300}
               aria-label="Form Description"
             />
           </div>
           {error && (
-            <div className="text-red-500 dark:text-red-300 mb-2 whitespace-pre-line">
+            <div className="text-red-500 dark:text-red-300 mb-2 whitespace-pre-line text-sm">
               {error.split('\n').map((msg, i) => (
                 <div key={i}> {msg}</div>
               ))}
@@ -193,21 +193,21 @@ const FormBuilder = ({ editMode, onUpdate }) => {
           )}
           {/* Questions */}
           {questions.map((q, idx) => (
-            <div key={idx} className="mb-3 bg-white dark:bg-gray-900 rounded-2xl shadow p-6 border border-gray-200 dark:border-gray-700 relative">
-              <div className="flex items-center mb-2 gap-2 flex-wrap">
+            <div key={idx} className="mb-3 bg-white dark:bg-gray-900 rounded-2xl shadow p-4 sm:p-6 border border-gray-200 dark:border-gray-700 relative">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center mb-2 gap-2">
                 {q.required && <span className="text-red-500 mr-1">*</span>}
                 <input
                   type="text"
                   value={q.text}
                   onChange={e => handleQuestionChange(idx, 'text', e.target.value)}
                   placeholder={`Question ${idx + 1}`}
-                  className="font-semibold text-gray-900 dark:text-white text-lg bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-400 dark:placeholder-gray-500 flex-1 min-w-[120px]"
+                  className="font-semibold text-gray-900 dark:text-white text-base sm:text-lg bg-transparent border-none focus:ring-0 focus:outline-none placeholder-gray-400 dark:placeholder-gray-500 flex-1 min-w-[120px]"
                   maxLength={200}
                   required={q.required}
                   aria-label={`Question ${idx + 1} Title`}
                 />
                 <select
-                  className="w-44 p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700 ml-2"
+                  className="w-full sm:w-44 p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700 mt-2 sm:mt-0 sm:ml-2 text-sm sm:text-base"
                   value={q.type}
                   onChange={e => handleQuestionChange(idx, 'type', e.target.value)}
                   aria-label="Question Type"
@@ -217,13 +217,13 @@ const FormBuilder = ({ editMode, onUpdate }) => {
                 </select>
                 {/* Delete Icon */}
                 {questions.length > 1 && (
-                  <button type="button" onClick={() => removeQuestion(idx)} className="ml-2 p-1 text-red-500 hover:text-red-700 focus:outline-none" title="Delete"><FaTrash /></button>
+                  <button type="button" onClick={() => removeQuestion(idx)} className="mt-2 sm:mt-0 sm:ml-2 p-1 text-red-500 hover:text-red-700 focus:outline-none" title="Delete"><FaTrash /></button>
                 )}
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 mb-4 items-center">
+              <div className="flex flex-col gap-4 mb-4">
                 {/* Answer Preview */}
                 {q.type === 'text' && (
-                  <input type="text" disabled placeholder="Short-answer text" className="w-full border-0 border-b-2 border-gray-200 dark:border-gray-700 bg-transparent focus:ring-0 focus:border-purple-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 py-2" />
+                  <input type="text" disabled placeholder="Short-answer text" className="w-full border-0 border-b-2 border-gray-200 dark:border-gray-700 bg-transparent focus:ring-0 focus:border-purple-500 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 py-2 text-sm sm:text-base" />
                 )}
                 {q.type === 'mcq' && (
                   <div className="flex flex-col gap-2 w-full mt-2">
@@ -241,11 +241,11 @@ const FormBuilder = ({ editMode, onUpdate }) => {
                             onChange={e => {
                               handleOptionChange(idx, oIdx, e.target.value);
                             }}
-                            className="flex-1 p-2 border-0 border-b-2 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-purple-500 focus:outline-none"
+                            className="flex-1 p-2 border-0 border-b-2 bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-purple-500 focus:outline-none text-sm sm:text-base"
                             aria-label={`Option ${oIdx + 1}`}
                           />
                           {options.length > 2 && oIdx < options.length - 1 && (
-                            <button type="button" onClick={() => removeOption(idx, oIdx)} className="ml-2 text-red-500 hover:underline" title="Remove Option">Remove</button>
+                            <button type="button" onClick={() => removeOption(idx, oIdx)} className="ml-2 text-red-500 hover:underline text-xs sm:text-sm" title="Remove Option">Remove</button>
                           )}
                         </label>
                       ));
@@ -255,7 +255,7 @@ const FormBuilder = ({ editMode, onUpdate }) => {
               </div>
               <div className="flex items-center justify-end mt-4">
                 <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <span className="text-gray-700 dark:text-gray-200 text-sm">Required</span>
+                  <span className="text-gray-700 dark:text-gray-200 text-xs sm:text-sm">Required</span>
                   <input
                     type="checkbox"
                     checked={q.required}
@@ -263,8 +263,8 @@ const FormBuilder = ({ editMode, onUpdate }) => {
                     className="sr-only"
                     aria-label="Toggle required"
                   />
-                  <span className={`w-10 h-6 flex items-center bg-gray-200 dark:bg-gray-700 rounded-full p-1 duration-300 ease-in-out ${q.required ? 'bg-purple-500' : ''}`}>
-                    <span className={`bg-white dark:bg-gray-200 w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out ${q.required ? 'translate-x-4' : ''}`}></span>
+                  <span className={`w-8 h-5 sm:w-10 sm:h-6 flex items-center bg-gray-200 dark:bg-gray-700 rounded-full p-1 duration-300 ease-in-out ${q.required ? 'bg-purple-500' : ''}`}>
+                    <span className={`bg-white dark:bg-gray-200 w-3 h-3 sm:w-4 sm:h-4 rounded-full shadow-md transform duration-300 ease-in-out ${q.required ? 'translate-x-3 sm:translate-x-4' : ''}`}></span>
                   </span>
                 </label>
               </div>
@@ -272,12 +272,12 @@ const FormBuilder = ({ editMode, onUpdate }) => {
           ))}
           {/* Add Question Button */}
           {questions.length < 5 && (
-            <button type="button" onClick={addQuestion} className="w-full bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 px-4 py-2 rounded shadow hover:bg-purple-200 dark:hover:bg-purple-800 font-semibold mb-2 mt-2" aria-label="Add Question">+ Add Question</button>
+            <button type="button" onClick={addQuestion} className="w-full bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 px-4 py-2 rounded shadow hover:bg-purple-200 dark:hover:bg-purple-800 font-semibold mb-2 mt-2 text-sm sm:text-base" aria-label="Add Question">+ Add Question</button>
           )}
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-purple-600 dark:bg-purple-500 text-white py-3 rounded-xl mt-4 hover:bg-purple-700 dark:hover:bg-purple-400 text-lg font-bold shadow focus:outline-none focus:ring-2 focus:ring-purple-400"
+            className="w-full bg-purple-600 dark:bg-purple-500 text-white py-3 rounded-xl mt-4 hover:bg-purple-700 dark:hover:bg-purple-400 text-base sm:text-lg font-bold shadow focus:outline-none focus:ring-2 focus:ring-purple-400"
             disabled={hasEmptyOption}
             aria-label={editMode ? 'Update Form' : 'Create Form'}
           >
@@ -293,49 +293,47 @@ const FormBuilder = ({ editMode, onUpdate }) => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full p-6"
+              className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl max-w-md w-full p-4 sm:p-6"
             >
               <div className="text-center">
-                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/20 mb-4">
-                  <svg className="h-6 w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="mx-auto flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-red-100 dark:bg-red-900/20 mb-4">
+                  <svg className="h-5 w-5 sm:h-6 sm:w-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-2">
                   Delete Question
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base">
                   Are you sure you want to delete <span className="font-semibold text-gray-900 dark:text-white">"{deleteModal.questionText || `Question ${deleteModal.questionIdx + 1}`}"</span>?
                 </p>
-                <p className="text-sm text-red-600 dark:text-red-400 mb-4">
+                <p className="text-xs sm:text-sm text-red-600 dark:text-red-400 mb-4">
                   This action cannot be undone. All responses for this question will be permanently deleted.
                 </p>
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Type "delete" to confirm:
                   </label>
                   <input
                     type="text"
                     value={deleteConfirmText}
-                    onChange={e => setDeleteConfirmText(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors"
+                    onChange={(e) => setDeleteConfirmText(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors text-sm"
                     placeholder="Type 'delete' here"
                     autoFocus
                   />
                 </div>
                 <div className="flex gap-3">
                   <button
-                    type="button"
                     onClick={handleDeleteQuestionCancel}
-                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
+                    className="flex-1 px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
                   >
                     Cancel
                   </button>
                   <button
-                    type="button"
                     onClick={handleDeleteQuestionConfirm}
                     disabled={deleteConfirmText.toLowerCase() !== "delete"}
-                    className="flex-1 px-4 py-2 bg-red-600 dark:bg-red-500 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-red-400"
+                    className="flex-1 px-3 sm:px-4 py-2 bg-red-600 dark:bg-red-500 text-white rounded-lg hover:bg-red-700 dark:hover:bg-red-400 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-red-400 text-sm sm:text-base"
                   >
                     Delete
                   </button>

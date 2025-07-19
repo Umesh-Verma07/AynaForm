@@ -141,21 +141,21 @@ const FormResponses = () => {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto mt-8 px-2 sm:px-4 md:px-6 pt-20">
+      <div className="max-w-4xl mx-auto mt-8 px-4 pt-20">
         {/* Header Section */}
-        <div className="flex justify-between items-start mb-6 gap-4">
-          <div className="w-[40rem] flex-shrink-0">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 break-words line-clamp-3 leading-tight">
+        <div className="flex flex-col sm:flex-row justify-between items-start mb-6 gap-4">
+          <div className="w-full sm:w-[40rem] flex-shrink-0">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2 break-words line-clamp-3 leading-tight">
               {form?.title || "Form Responses"}
             </h2>
-            <p className="text-gray-600 dark:text-gray-300">
+            <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
               {responses.length} responses
             </p>
           </div>
-          <div className="flex gap-3 flex-shrink-0">
+          <div className="flex gap-2 sm:gap-3 flex-shrink-0 w-full sm:w-auto">
             <button
               onClick={handleExport}
-              className="bg-green-600 dark:bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 dark:hover:bg-green-400 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400 whitespace-nowrap"
+              className="bg-green-600 dark:bg-green-500 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-green-700 dark:hover:bg-green-400 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400 whitespace-nowrap text-sm sm:text-base"
             >
               Export CSV
             </button>
@@ -166,7 +166,7 @@ const FormResponses = () => {
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => setViewMode("summary")}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 ${
+            className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 text-sm sm:text-base ${
               viewMode === "summary"
                 ? "bg-purple-600 dark:bg-purple-500 text-white"
                 : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
@@ -176,7 +176,7 @@ const FormResponses = () => {
           </button>
           <button
             onClick={() => setViewMode("table")}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 ${
+            className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 text-sm sm:text-base ${
               viewMode === "table"
                 ? "bg-purple-600 dark:bg-purple-500 text-white"
                 : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600"
@@ -186,37 +186,37 @@ const FormResponses = () => {
           </button>
         </div>
 
-        {error && <div className="text-red-500 dark:text-red-300 mb-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">{error}</div>}
+        {error && <div className="text-red-500 dark:text-red-300 mb-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg text-sm">{error}</div>}
 
         {/* Responses Display */}
-        <div className="bg-white dark:bg-[#232a47] rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-6 w-full max-w-6xl mx-auto">
+        <div className="bg-white dark:bg-[#232a47] rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 w-full max-w-6xl mx-auto">
           {form && responses.length > 0 ? (
             viewMode === "summary" ? (
               // Summary View (current detailed view)
               <div className="w-full">
-                <div className="space-y-8 w-full">
+                <div className="space-y-6 sm:space-y-8 w-full">
                   {/* Question Summary Cards */}
                   {form.questions.map((question, qIdx) => {
                     const stats = getQuestionStats(question);
                     return (
-                      <div key={qIdx} className="border-b border-gray-200 dark:border-gray-700 pb-8 last:border-b-0 w-full">
+                      <div key={qIdx} className="border-b border-gray-200 dark:border-gray-700 pb-6 sm:pb-8 last:border-b-0 w-full">
                         <div className="flex justify-between items-start mb-4 w-full">
                           <div className="w-full">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+                            <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-1">
                               {question.text}
                             </h3>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
+                            <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
                               {responses.length} responses
                             </p>
                           </div>
                         </div>
                         
                         {question.type === 'mcq' && stats ? (
-                          <div className="grid md:grid-cols-2 gap-6 w-full">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full">
                             {/* Pie Chart Visualization */}
                             <div className="flex justify-center">
-                              <div className="relative w-64 h-64">
-                                <svg width="256" height="256" viewBox="0 0 256 256" className="transform -rotate-90">
+                              <div className="relative w-48 h-48 sm:w-64 sm:h-64">
+                                <svg width="192" height="192" viewBox="0 0 256 256" className="transform -rotate-90 sm:w-64 sm:h-64">
                                   {(() => {
                                     const radius = 100;
                                     const circumference = 2 * Math.PI * radius;
@@ -250,10 +250,10 @@ const FormResponses = () => {
                                 </svg>
                                 <div className="absolute inset-0 flex items-center justify-center">
                                   <div className="text-center">
-                                    <div className="text-3xl font-bold text-gray-900 dark:text-white">
+                                    <div className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
                                       {stats.totalResponses}
                                     </div>
-                                    <div className="text-sm text-gray-600 dark:text-gray-300">
+                                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                                       responses
                                     </div>
                                   </div>
@@ -262,23 +262,23 @@ const FormResponses = () => {
                             </div>
                             
                             {/* Legend and Statistics */}
-                            <div className="space-y-3 w-full">
+                            <div className="space-y-2 sm:space-y-3 w-full">
                               {Object.entries(stats.optionCounts).map(([option, count], index) => (
-                                <div key={option} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg w-full">
-                                  <div className="flex items-center gap-3">
+                                <div key={option} className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg w-full">
+                                  <div className="flex items-center gap-2 sm:gap-3">
                                     <div 
-                                      className="w-4 h-4 rounded-full" 
+                                      className="w-3 h-3 sm:w-4 sm:h-4 rounded-full" 
                                       style={{ backgroundColor: COLORS[index % COLORS.length] }}
                                     ></div>
-                                    <span className="text-gray-900 dark:text-white font-medium">
+                                    <span className="text-gray-900 dark:text-white font-medium text-sm sm:text-base">
                                       {option}
                                     </span>
                                   </div>
                                   <div className="text-right">
-                                    <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                                    <div className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                                       {count}
                                     </div>
-                                    <div className="text-sm text-gray-600 dark:text-gray-300">
+                                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                                       {stats.percentages[option]}%
                                     </div>
                                   </div>
@@ -287,46 +287,29 @@ const FormResponses = () => {
                             </div>
                           </div>
                         ) : (
-                          /* Text Question Responses */
-                          <div className="space-y-3 w-full">
-                            {(() => {
-                              const textStats = getTextQuestionStats(question);
-                              const uniqueAnswers = Object.entries(textStats.answerCounts);
-                              
-                              if (uniqueAnswers.length === 0) {
-                                return (
-                                  <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                                    No responses for this question
-                                  </div>
-                                );
-                              }
-                              
-                              return (
-                                <div className="space-y-3">
-                                  {uniqueAnswers.map(([answer, count], index) => (
-                                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg w-full">
-                                      <div className="flex items-center gap-3">
-                                        <div 
-                                          className="w-4 h-4 rounded-full" 
-                                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                                        ></div>
-                                        <span className="text-gray-900 dark:text-white font-medium break-words">
-                                          {answer}
-                                        </span>
-                                      </div>
-                                      <div className="text-right flex-shrink-0">
-                                        <div className="text-lg font-semibold text-gray-900 dark:text-white">
-                                          {count}
-                                        </div>
-                                        <div className="text-sm text-gray-600 dark:text-gray-300">
-                                          {textStats.percentages[answer]}%
-                                        </div>
-                                      </div>
+                          // Text question statistics
+                          <div className="space-y-3">
+                            <div className="text-sm sm:text-base text-gray-600 dark:text-gray-300">
+                              {responses.length} text responses
+                            </div>
+                            <div className="max-h-60 overflow-y-auto space-y-2">
+                              {(() => {
+                                const textStats = getTextQuestionStats(question);
+                                return Object.entries(textStats.answerCounts)
+                                  .sort(([,a], [,b]) => b - a)
+                                  .slice(0, 10)
+                                  .map(([answer, count]) => (
+                                    <div key={answer} className="flex justify-between items-center p-2 sm:p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                      <span className="text-gray-900 dark:text-white text-sm sm:text-base flex-1 mr-2">
+                                        {answer}
+                                      </span>
+                                      <span className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm font-medium">
+                                        {count}
+                                      </span>
                                     </div>
-                                  ))}
-                                </div>
-                              );
-                            })()}
+                                  ));
+                              })()}
+                            </div>
                           </div>
                         )}
                       </div>
@@ -336,145 +319,98 @@ const FormResponses = () => {
               </div>
             ) : (
               // Table View
-              <div className="w-full">
-                {/* Filter Input */}
-                <div className="mb-6 w-full">
-                  <div className="relative w-full">
-                    <input
-                      type="text"
-                      placeholder="Filter by question, answer, or date..."
-                      value={filterText}
-                      onChange={(e) => setFilterText(e.target.value)}
-                      className="w-full px-4 py-3 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
-                    />
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </div>
-                  </div>
-                  {filterText && (
-                    <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                      Showing {filteredResponses.length} of {responses.length} responses
-                    </div>
-                  )}
-                </div>
-                
-                <div className="overflow-x-auto w-full">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-200 font-semibold w-16">
-                          #
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm sm:text-base">
+                  <thead>
+                    <tr className="border-b border-gray-200 dark:border-gray-700">
+                      <th className="text-left py-2 sm:py-3 px-2 sm:px-4 font-semibold text-gray-900 dark:text-white">#</th>
+                      <th className="text-left py-2 sm:py-3 px-2 sm:px-4 font-semibold text-gray-900 dark:text-white">Date</th>
+                      {form.questions.map((q, idx) => (
+                        <th key={idx} className="text-left py-2 sm:py-3 px-2 sm:px-4 font-semibold text-gray-900 dark:text-white max-w-[200px]">
+                          {q.text}
                         </th>
-                        {form.questions.map((q, idx) => (
-                          <th key={idx} className="text-left py-3 px-4 text-gray-700 dark:text-gray-200 font-semibold min-w-[200px] max-w-[300px] truncate" title={q.text}>
-                            {q.text}
-                          </th>
-                        ))}
-                        <th className="text-left py-3 px-4 text-gray-700 dark:text-gray-200 font-semibold w-48">
-                          Submitted At
-                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {paginated.map((response, idx) => (
+                      <tr key={response._id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800">
+                        <td className="py-2 sm:py-3 px-2 sm:px-4 text-gray-600 dark:text-gray-400">
+                          {(page - 1) * PAGE_SIZE + idx + 1}
+                        </td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4 text-gray-600 dark:text-gray-400 text-xs sm:text-sm">
+                          {new Date(response.createdAt).toLocaleDateString()}
+                        </td>
+                        {form.questions.map((q, qIdx) => {
+                          const answer = response.answers.find(a => a.questionId === q._id)?.answer || 
+                                       response.answers[qIdx]?.answer || '';
+                          const isTruncated = hasTruncatedContent(response);
+                          
+                          return (
+                            <td key={qIdx} className="py-2 sm:py-3 px-2 sm:px-4 text-gray-900 dark:text-white">
+                              <div className="max-w-[200px]">
+                                {isTruncated && expandedRows.includes(idx) ? (
+                                  <div>
+                                    <div className="whitespace-pre-wrap">{answer}</div>
+                                    <button
+                                      onClick={() => toggleRowExpansion(idx)}
+                                      className="text-purple-600 dark:text-purple-400 hover:underline text-xs sm:text-sm mt-1"
+                                    >
+                                      Show less
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <div className="truncate">{answer}</div>
+                                    {isTruncated && (
+                                      <button
+                                        onClick={() => toggleRowExpansion(idx)}
+                                        className="text-purple-600 dark:text-purple-400 hover:underline text-xs sm:text-sm mt-1"
+                                      >
+                                        Show more
+                                      </button>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                          );
+                        })}
                       </tr>
-                    </thead>
-                    <tbody>
-                      {paginated.map((resp, idx) => {
-                        const rowIndex = (page - 1) * PAGE_SIZE + idx;
-                        const isExpanded = expandedRows.has(rowIndex);
-                        const hasTruncated = hasTruncatedContent(resp);
-                        
-                        return (
-                          <React.Fragment key={idx}>
-                            <tr 
-                              className={`border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${hasTruncated ? 'cursor-pointer' : ''}`}
-                              onClick={() => hasTruncated && toggleRowExpansion(rowIndex)}
-                            >
-                              <td className="py-3 px-4 text-gray-600 dark:text-gray-400 font-medium w-16">
-                                {(page - 1) * PAGE_SIZE + idx + 1}
-                              </td>
-                              {form.questions.map((question, qIdx) => {
-                                // Find the answer for this specific question using questionId
-                                const answer = resp.answers.find(a => a.questionId === question._id)?.answer || "-";
-                                return (
-                                  <td key={qIdx} className="py-3 px-4 text-gray-900 dark:text-white min-w-[200px] max-w-[300px] truncate whitespace-nowrap" title={answer}>
-                                    {answer}
-                                  </td>
-                                );
-                              })}
-                              <td className="py-3 px-4 text-gray-700 dark:text-gray-300 w-48">
-                                {new Date(resp.submittedAt).toLocaleString()}
-                              </td>
-                            </tr>
-                            {/* Expanded row with full content */}
-                            {isExpanded && hasTruncated && (
-                              <tr className="bg-gray-50 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-                                <td className="py-3 px-4 text-gray-600 dark:text-gray-400 font-medium w-16">
-                                  {/* Empty cell for alignment */}
-                                </td>
-                                {form.questions.map((question, qIdx) => {
-                                  const answer = resp.answers.find(a => a.questionId === question._id)?.answer || "-";
-                                  return (
-                                    <td key={qIdx} className="py-3 px-4 text-gray-900 dark:text-white min-w-[200px] max-w-[300px] whitespace-normal break-words">
-                                      <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                                        Full Answer:
-                                      </div>
-                                      <div className="text-gray-900 dark:text-white">
-                                        {answer}
-                                      </div>
-                                    </td>
-                                  );
-                                })}
-                                <td className="py-3 px-4 text-gray-700 dark:text-gray-300 w-48">
-                                  {/* Empty cell for alignment */}
-                                </td>
-                              </tr>
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )
-          ) : responses.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-gray-500 dark:text-gray-400 text-lg mb-2">
+          ) : (
+            <div className="text-center py-8">
+              <div className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
                 No responses yet
               </div>
-              <div className="text-gray-400 dark:text-gray-500 text-sm">
-                Share your form to start collecting responses
-              </div>
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <div className="text-gray-500 dark:text-gray-400">Loading responses...</div>
             </div>
           )}
         </div>
 
-        {/* Pagination - Only show for table view */}
+        {/* Pagination */}
         {viewMode === "table" && filteredResponses.length > PAGE_SIZE && (
-          <div className="flex justify-center mt-6">
-            <div className="flex gap-2">
-              <button
-                onClick={() => setPage(p => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
-                Previous
-              </button>
-              <span className="px-3 py-2 text-gray-700 dark:text-gray-300">
-                Page {page} of {Math.ceil(filteredResponses.length / PAGE_SIZE)}
-              </span>
-              <button
-                onClick={() => setPage(p => Math.min(Math.ceil(filteredResponses.length / PAGE_SIZE), p + 1))}
-                disabled={page === Math.ceil(filteredResponses.length / PAGE_SIZE)}
-                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
-                Next
-              </button>
-            </div>
+          <div className="flex justify-center items-center gap-2 mt-6">
+            <button
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
+            >
+              Previous
+            </button>
+            <span className="px-3 sm:px-4 py-2 text-gray-700 dark:text-gray-300 text-sm sm:text-base">
+              Page {page} of {Math.ceil(filteredResponses.length / PAGE_SIZE)}
+            </span>
+            <button
+              onClick={() => setPage(p => Math.min(Math.ceil(filteredResponses.length / PAGE_SIZE), p + 1))}
+              disabled={page === Math.ceil(filteredResponses.length / PAGE_SIZE)}
+              className="px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 text-sm sm:text-base"
+            >
+              Next
+            </button>
           </div>
         )}
       </div>
