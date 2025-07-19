@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getForms, deleteForm } from "../services/forms";
-import Navbar from "../components/Navbar";
 import { motion, AnimatePresence } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -63,7 +62,6 @@ const Dashboard = () => {
   return (
     <>
       <Toaster position="top-right" />
-      <Navbar />
       <div className="max-w-6xl mx-auto mt-8 px-2 sm:px-4 md:px-6 pt-20">
         {/* Header and new form button */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">

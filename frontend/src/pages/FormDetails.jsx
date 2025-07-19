@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getForm, deleteForm, getResponses, updateForm } from "../services/forms";
-import Navbar from "../components/Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import FormBuilder from "./FormBuilder";
 import { motion, AnimatePresence } from "framer-motion";
@@ -88,7 +87,6 @@ const FormDetails = () => {
   if (!form) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-[#181c2f] dark:via-[#232a47] dark:to-[#2d1e3a] transition-colors duration-500">
-        <Navbar />
         <div className="mt-16 text-gray-700 dark:text-gray-200">{error || "Loading..."}</div>
       </div>
     );
@@ -97,7 +95,6 @@ const FormDetails = () => {
   return (
     <>
       <Toaster position="top-right" />
-      <Navbar />
       <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-[#181c2f] dark:via-[#232a47] dark:to-[#2d1e3a] transition-colors duration-500 py-8 pt-20">
         {/* Action buttons */}
         <div className="w-full max-w-2xl flex flex-wrap gap-3 mb-3 justify-end">

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getForm, submitResponse } from "../services/forms";
 import { useAuth } from "../hooks/useAuth";
+import { useTheme } from "../hooks/useTheme";
 
-// Public form page for submitting responses
 const PublicForm = () => {
   const { id } = useParams();
   // State
@@ -11,6 +11,7 @@ const PublicForm = () => {
   const [answers, setAnswers] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const { theme, toggleTheme } = useTheme();
 
   // Load form data
   useEffect(() => {
@@ -65,6 +66,23 @@ const PublicForm = () => {
   if (form.acceptingResponses === false) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center py-8 pt-20">
+        {/* Theme toggle button */}
+        <button
+          onClick={toggleTheme}
+          className="absolute top-4 right-4 rounded-full p-3 bg-white/20 dark:bg-gray-800/20 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-colors backdrop-blur-lg"
+          title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          {theme === "dark" ? (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8.66-8.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.95 7.07l-.71-.71M7.05 4.93l-.71-.71M12 5a7 7 0 100 14 7 7 0 000-14z" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
+            </svg>
+          )}
+        </button>
+
         <div className="bg-white dark:bg-[#232a47] rounded-2xl shadow-xl border-t-8 border-red-500 p-8 mb-3 mt-0 w-full max-w-xl flex flex-col items-center">
           <svg className="w-16 h-16 text-red-400 mb-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
@@ -78,6 +96,23 @@ const PublicForm = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center py-8 pt-20">
+      {/* Theme toggle button */}
+      <button
+        onClick={toggleTheme}
+        className="absolute top-4 right-4 rounded-full p-3 bg-white/20 dark:bg-gray-800/20 hover:bg-white/30 dark:hover:bg-gray-800/30 transition-colors backdrop-blur-lg"
+        title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        {theme === "dark" ? (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m8.66-8.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.95 7.07l-.71-.71M7.05 4.93l-.71-.71M12 5a7 7 0 100 14 7 7 0 000-14z" />
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
+          </svg>
+        )}
+      </button>
+
       {/* Title/Description Card */}
       <div className="bg-white dark:bg-[#232a47] rounded-2xl shadow-xl border-t-8 border-purple-500 p-8 mb-3 mt-0 w-full max-w-xl">
         <h2 className="w-full text-3xl font-extrabold text-gray-900 dark:text-white mb-2 break-words">{form.title}</h2>

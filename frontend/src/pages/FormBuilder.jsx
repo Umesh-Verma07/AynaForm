@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createForm, getForm, updateForm, deleteQuestionResponses } from "../services/forms";
-import Navbar from "../components/Navbar";
 import { FaTrash } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from "react-hot-toast";
@@ -161,7 +160,6 @@ const FormBuilder = ({ editMode, onUpdate }) => {
 
   return (
     <>
-      <Navbar />
       <div className={`min-h-screen flex flex-col items-center py-8 ${editMode ? 'pt-0' : 'pt-20'}`}>
         <form onSubmit={handleSubmit} className="w-full max-w-2xl mx-auto p-0">
           {/* Form title and description */}

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getForm, getSummary } from "../services/forms";
-import Navbar from "../components/Navbar";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#8dd1e1"];
@@ -24,7 +23,6 @@ const FormSummary = () => {
 
   return (
     <>
-      <Navbar />
       <div className="max-w-3xl mx-auto mt-8 px-2 sm:px-4 md:px-6 pt-20">
         <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Summary</h2>
         {error && <div className="text-red-500 dark:text-red-300 mb-2">{error}</div>}

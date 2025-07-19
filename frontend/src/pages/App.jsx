@@ -8,15 +8,17 @@ import FormSummary from "./FormSummary";
 import PublicForm from "./PublicForm";
 import FormDetails from "./FormDetails";
 import { useAuth } from "../hooks/useAuth";
+import Navbar from "../components/Navbar";
 
 // Main application component with routing
 const App = () => {
   // Get authentication state
   const { isAuthenticated } = useAuth();
-
   return (
     // App background and layout
     <div className="min-h-screen w-full font-sans bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-[#181c2f] dark:via-[#232a47] dark:to-[#2d1e3a] text-gray-900 dark:text-gray-100 transition-colors duration-500 flex flex-col">
+      {/* Show Navbar only for authenticated users */}
+      {isAuthenticated && <Navbar />}
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />

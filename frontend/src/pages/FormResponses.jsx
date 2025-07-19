@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getForm, getResponses, exportCSV } from "../services/forms";
-import Navbar from "../components/Navbar";
 
 const PAGE_SIZE = 15;
 
@@ -142,7 +141,6 @@ const FormResponses = () => {
 
   return (
     <>
-      <Navbar />
       <div className="max-w-4xl mx-auto mt-8 px-2 sm:px-4 md:px-6 pt-20">
         {/* Header Section */}
         <div className="flex justify-between items-start mb-6 gap-4">
