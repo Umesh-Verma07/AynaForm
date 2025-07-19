@@ -72,13 +72,21 @@ npm install
 ```
 
 ### 3. Environment Variables
+#### Backend
 Create a `.env` file in `backend/` with the following fields:
 ```env
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/aynaform
 JWT_SECRET=your_jwt_secret_here
 ```
-> See `.env.example` for reference.
+> See `backend/.env.example` for reference.
+
+#### Frontend
+Create a `.env` file in `frontend/` with the following field (or see `frontend/.env.example`):
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+> Adjust the API URL if your backend runs on a different host or port.
 
 ### 4. Start MongoDB
 - Ensure MongoDB is running on your machine (default port 27017).
@@ -135,7 +143,7 @@ AynaForm/
 
 ## Workflow Overview
 
-![AynaForm Platform – Workflow Overview](./workflow-diagram.png)
+![AynaForm Platform – Workflow Overview](./Workflow-diagram.png)
 
 ---
 
